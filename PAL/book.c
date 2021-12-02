@@ -94,3 +94,76 @@ P_BOOK searchTitle(P_BOOK listOfBooks, char bookTitle[])
 	return NULL;
 
 }
+
+void saveBooks(P_BOOK listofBooks)
+{
+	FILE* fp;
+	fp = fopen("bookList.txt", "w+");
+	P_BOOK currentBook = listofBooks;
+	while (currentBook != NULL)
+	{
+		fprintf(fp, "%d\n", currentBook->ISBN);
+		fprintf(fp, "%s\n", currentBook->bookAuthor);
+		fprintf(fp, "%s\n", currentBook->bookTitle);
+		fprintf(fp, "%d\n", currentBook->volumeNumber);
+		currentBook = currentBook->next;
+	}
+	fclose(fp);
+}
+
+P_BOOK readBooks(P_BOOK listofBooks)
+{
+	FILE* fp;
+	fp = fopen("bookList.txt", "r");
+	char tempISBN[MAXLEN];
+	char tempBOOKAUTHOR[MAXLEN];
+	
+	char tempBOOKTITLE[MAXLEN];
+	char tempVOLNUM[MAXLEN];
+	int trueISBN;
+	int trueVOLNUM;
+	P_BOOK tempBOOK;
+	for (int i = 0; i<3; i++)
+	{
+		fgets(tempISBN, MAXLEN, fp);
+		trueISBN = atoi(tempISBN);
+		fgets(tempBOOKAUTHOR, MAXLEN, fp);
+		tempBOOKAUTHOR[strlen(tempBOOKAUTHOR) - 1] = '\0';
+		fgets(tempBOOKTITLE, MAXLEN, fp);
+		tempBOOKTITLE[strlen(tempBOOKTITLE) - 1] = '\0';
+		fgets(tempVOLNUM, MAXLEN, fp);
+		trueVOLNUM = atoi(tempVOLNUM);
+		tempBOOK = createBook((double)trueISBN, tempBOOKAUTHOR, tempBOOKTITLE, trueVOLNUM);
+		listofBooks = updateList(listofBooks, tempBOOK);
+	}
+	fclose(fp);
+
+	return listofBooks;
+}
+
+P_BOOK addBook(P_BOOK listofBooks)
+{
+	char ISBN[MAXLEN];
+	char bookAuthor[MAXLEN];
+	char bookTitle[MAXLEN];
+	char volNum[MAXLEN];
+	int trueISBN;
+	int trueVolNum;
+	printf("Please insert ISBN:\n");
+	fgets(ISBN, MAXLEN, stdin);
+	trueISBN = atoi(ISBN);
+	printf("Input Author name:\n");
+	fgets(bookAuthor, MAXLEN, stdin);
+	bookAuthor[strlen(bookAuthor) - 1] = '\0';
+	printf("Input Book Title:\n");
+	fgets(bookTitle, MAXLEN, stdin);
+	bookTitle[strlen(bookTitle) - 1] = '\0';
+	printf("Input volume number:\n");
+	fgets(volNum, MAXLEN, stdin);
+	trueVolNum = atoi(volNum);
+
+	P_BOOK aBook = createBook((double)trueISBN, bookAuthor, bookTitle, trueVolNum);
+	listofBooks = updateList(listofBooks, aBook);
+	
+	return listofBooks;
+}
