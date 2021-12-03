@@ -15,9 +15,10 @@ typedef struct book {
 } BOOK, * P_BOOK; // type def the pointer to books into *P_BOOKS
 
 P_BOOK createBook(double, char[], char[], int);
-P_BOOK removeBook(P_BOOK, char[]);
+P_BOOK removeBook(P_BOOK);
 P_BOOK updateList(P_BOOK, P_BOOK);
-P_BOOK searchTitle(P_BOOK lisitOfBooks, char bookTitle[]);
+P_BOOK searchTitle(P_BOOK, char[]);
 void saveBooks(P_BOOK);
 P_BOOK readBooks(P_BOOK);
 P_BOOK addBook(P_BOOK);
+P_BOOK searchISBN(P_BOOK, int );
